@@ -8,9 +8,18 @@
 ## 🗂  디렉토리 구조
 ```
 └── programmers
-    ├── level1
-    ├── level2
-    └── level3
+│   └── level0/
+│       ├── string/
+│       └── math/
+│   ├── level1
+│   ├── level2
+│   └── level3
+└── baekjoon
+    ├── bronze/
+    │   ├── string/
+    │   └── math/
+    ├── silver
+    └── gold
 ```
 
 ## 🔍 문제 풀이 작성 규칙
@@ -22,6 +31,7 @@
 ## ✅  commit 규칙
 ```
 solve: [Level1] problem name (#problem_number)
+solve: [BOJ/Bronze] problem name (#problem_number)
 docs: update README.md
 refactor: improve solution
 ```
@@ -29,7 +39,7 @@ refactor: improve solution
 ## 🛠 개발 환경
 - Language: Java 17
 - IDE: IntelliJ IDEA
-- Platform: Programmers
+- Platform: Programmers, Baekjoon Online Judge
 
 ## 📌 목표
 - Java 언어 숙달
