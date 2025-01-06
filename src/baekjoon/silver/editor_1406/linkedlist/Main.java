@@ -1,4 +1,4 @@
-package baekjoon.silver.editor_1406.stack;
+package baekjoon.silver.editor_1406.linkedlist;
 
 import java.io.*;
 import java.util.*;
@@ -10,10 +10,11 @@ public class Main {
 
         // 첫줄 String 입력받기
         String str = br.readLine();
-        Stack<Character> leftStack = new Stack<>();
-        Stack<Character> rightStack = new Stack<>();
+        LinkedList<Character> strLinkedlist = new LinkedList<>(); // LinkedList 생성
+        ListIterator<Character> cursor = strLinkedlist.listIterator(strLinkedlist.size());
         for (int i = 0; i < str.length(); i++) {
-            leftStack.push(str.charAt(i));
+            cursor.add(str.charAt(i)); // 시간복잡도 O(1)
+            // strLinkedList.add(str.charAt(i))도 성능상 큰 차이는 없음
         }
 
         // 반복할 횟수 입력받기
@@ -25,25 +26,21 @@ public class Main {
 
             switch (command) {
                 case "L":
-                    if (!leftStack.empty()) {
-                        Character c = leftStack.pop();
-                        rightStack.push(c);
-                    }
-                    break;
+                    if (cursor.hasPrevious()) {
+                        cursor.previous();
+                    } break;
                 case "D":
-                    if (!rightStack.empty()) {
-                        Character c = rightStack.pop();
-                        leftStack.push(c);
-                    }
-                    break;
+                    if (cursor.hasNext()) {
+                        cursor.next();
+                    } break;
                 case "B":
-                    if (!leftStack.empty()) {
-                        leftStack.pop();
-                    }
-                    break;
+                    if (cursor.hasPrevious()) {
+                        cursor.previous(); // 최근에 지나친 요소 (내가 삭제할 대상)
+                        cursor.remove(); // remove 메소드는 가장 최근에 지나치게 된 요소를 삭제함
+                    } break;
                 case "P":
                     Character plusElement = st.nextToken().charAt(0);
-                    leftStack.push(plusElement);
+                    cursor.add(plusElement);
                     break;
                 default:
                     break;
@@ -53,14 +50,9 @@ public class Main {
         // StringBuilder로 출력 최적화
         StringBuilder sb = new StringBuilder();
 
-        // leftStack 출력
-        for(char c : leftStack) {
+        // LinkedList 타입의 요소들 순서대로 출력
+        for (Character c : strLinkedlist) {
             sb.append(c);
-        }
-
-        // rightStack 역순 출력
-        while(!rightStack.empty()) {
-            sb.append(rightStack.pop());
         }
 
         System.out.println(sb);
