@@ -33,7 +33,8 @@
 solve: [Level1] problem name (#problem_number)
 solve: [BOJ/Bronze] problem name (#problem_number)
 docs: update README.md
-refactor: improve solution
+refactor: improve solution with [방법] (#problem_number)
+feat: add [자료구조/알고리즘] solution (#problem_number)
 ```
 
 ## 🛠 개발 환경
