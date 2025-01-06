@@ -77,7 +77,7 @@ P $	$라는 문자를 커서 왼쪽에 추가함
 
 ### 🧰 풀이 과정
 
-1차 시도 (시간 초과)
+1차 시도 - Stack (시간 초과)
 1. 하나의 Stack을 사용하여 문자열 처리
 2. 커서 위치를 인덱스로 관리하며 add(index), remove(index) 사용 -> 사용할 때마다 O(n)
 
@@ -86,11 +86,18 @@ Stack<Character> strStack = new Stack<>();
 // add(index), remove(index) 사용으로 인한 O(n) 연산 발생
 ```
 
-2차 시도 (성공)
+2차 시도 - Stack (성공)
 1. 두 개의 Stack을 사용하여 커서 위치를 기준으로 문자열을 분리 
 2. 왼쪽 스택과 오른쪽 스택으로 나누어 관리 
 3. push/pop 연산만을 사용하여 O(1) 시간에 모든 연산 처리 
 4. StringBuilder를 사용하여 출력 최적화 (하기 전엔 시간 초과 났음)
+
+
+3차 시도 - LinkedList (성공)
+1. LinkedList와 ListIterator를 사용하여 구현 
+2. ListIterator로 커서 위치를 관리하며 O(1) 시간에 모든 연산 처리 
+3. 커서의 위치를 요소 사이의 "틈"으로 관리하여 직관적인 구현 가능
+
 
 ### 시간복잡도와 공간복잡도
 
@@ -114,12 +121,24 @@ Stack<Character> strStack = new Stack<>();
     공간복잡도: O(n)
       - 두 개의 스택에 총 n개의 문자 분할 저장
 
+* 3차 시도
 
+
+    시간복잡도: O(n + m)
+      - ListIterator를 사용하여 모든 연산이 O(1)
+      - n: 초기 문자열 길이, m: 명령어 수
+
+    공간복잡도: O(n)
+      - LinkedList에 n개의 문자 저장
+      - 각 노드당 앞뒤 링크 추가 저장
 
 ### ✨ 새롭게 배운 점
 1. Stack의 효율적인 사용방법
     - push/pop은 O(1), add(index)/remove(index)는 O(n)
     - 실제 스택 용도로 쓸 때는 항상 push/pop 사용해야 함 (주의)
+    - Stack에서 좋은 사용: push, pop, peek - 맨 위 요소 접근 O(1)
+    - Stack에서 피해야 할 사용: add, remove, get - 중간 요소 접근 O(n)
+    - 스택의 경우 시간복잡도에 예민하니 신경써야 함
 
 
 2. 두 개의 스택을 활용한 커서 구현
@@ -131,3 +150,10 @@ Stack<Character> strStack = new Stack<>();
 
    - 많은 문자열 연산시 System.out.print 대신 StringBuilder 사용
    - 출력 처리 시간 감소폭 큼
+
+
+4. LinkedList와 ListIterator 활용
+
+   - ListIterator로 커서 구현 시 직관적이고 효율적
+   - "요소 사이의 틈"을 커서로 활용하는 개념 학습
+   - 양방향 순회가 가능한 LinkedList를 활용해봄
