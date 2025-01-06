@@ -1,4 +1,4 @@
-package baekjoon.silver.editor_1406;
+package baekjoon.silver.editor_1406.stack;
 
 import java.io.*;
 import java.util.*;
