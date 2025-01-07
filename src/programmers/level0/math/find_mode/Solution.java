@@ -1,4 +1,4 @@
-package programmers.level0.find_mode;
+package programmers.level0.math.find_mode;
 
 import java.util.ArrayList;
 import java.util.Collections;
