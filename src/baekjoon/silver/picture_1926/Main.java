@@ -1,4 +1,4 @@
-package baekjoon.silver.picture_1926_not;
+package baekjoon.silver.picture_1926;
 
 import java.io.*;
 import java.util.*;
