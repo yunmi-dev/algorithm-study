@@ -1,4 +1,4 @@
-package programmers.level0.median;
+package programmers.level0.median_not;
 
 import java.util.ArrayList;
 
