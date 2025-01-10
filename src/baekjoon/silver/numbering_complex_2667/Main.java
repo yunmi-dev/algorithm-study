@@ -1,45 +1,49 @@
-package baekjoon.silver.maze_search_2178;
+package baekjoon.silver.numbering_complex_2667;
 
 import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[] dx = {-1, 1, 0, 0};
-    static int[] dy = {0, 0, -1, 1};
-    static int N, M;
-    static int[][] maze;
-    static int[][] distance;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        int T = Integer.parseInt(br.readLine());
+        int[][] graph = new int[T][T];
+        boolean[][] visited = new boolean[T][T];
 
-        maze = new int[N][M];
-        distance = new int[N][M];
-
-        for (int row = 0; row < N; row++) {
+        for (int row = 0; row < T; row++) {
             String line = br.readLine();
-            for (int col = 0; col < M; col++) {
-                maze[row][col] = line.charAt(col) - '0'; // char를 정수로 가져오기 위해
-                // '1' - '0' = 49 - 48 = 1 이런식으로 실제 정수값을 얻음
+            for (int col = 0; col < T; col++) {
+                graph[row][col] = line.charAt(col) - '0'; // 못풀었던 포인트, 0은 47 1은 48로 입력됐었음.
             }
-        } // 여기까지 2차원 배열 미로 저장
+        }
 
-        // BFS...
-        bfs();
+        ArrayList<Integer> apartsCount = new ArrayList<>();
 
-        System.out.println(distance[N - 1][M - 1]);
+        for (int row = 0; row < T; row++) {
+            for (int col = 0; col < T; col++) {
+                if (!visited[row][col] && graph[row][col] == 1) {
+                    int[] index = {row, col};
+                    apartsCount.add(bfs(index, graph, visited));
+                }
+            }
+        }
+        int complexesCount = apartsCount.size();
+        System.out.println(complexesCount);
+        Collections.sort(apartsCount);
+        for (Integer count : apartsCount) {
+            System.out.println(count);
+        }
     }
 
-    static void bfs() {
+    static int bfs(int[] index, int[][] graph, boolean[][] visited) {
         Queue<int[]> queue = new LinkedList<>();
-
-        // 시작점 처리 - 항상 (0, 0) 에서 시작함
-        queue.offer(new int[]{0, 0});
-        distance[0][0] = 1;
+        queue.offer(index);
+        int apartCount = 1;
+        visited[index[0]][index[1]] = true;
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
 
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
@@ -48,13 +52,15 @@ public class Main {
                 int nx = current[0] + dx[i];
                 int ny = current[1] + dy[i];
 
-                if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
+                if (nx < 0 || nx >= graph[0].length || ny < 0 || ny >= graph[0].length) { continue; }
 
-                if (distance[nx][ny] == 0 && maze[nx][ny] == 1) {
-                    distance[nx][ny] = distance[current[0]][current[1]] + 1;  // 이전 위치의 거리 + 1
+                if (!visited[nx][ny] && graph[nx][ny] == 1) {
                     queue.offer(new int[]{nx, ny});
+                    visited[nx][ny] = true;
+                    apartCount++;
                 }
             }
         }
+        return apartCount;
     }
 }
