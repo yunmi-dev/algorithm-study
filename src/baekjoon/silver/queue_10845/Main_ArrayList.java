@@ -3,7 +3,7 @@ package baekjoon.silver.queue_10845;
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Main_ArrayList {
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
