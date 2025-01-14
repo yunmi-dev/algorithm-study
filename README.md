@@ -50,7 +50,7 @@ feat: add [자료구조/알고리즘] solution (#problem_number)
 
 ## 📊 학습 진행도
 ### 프로그래머스
-![Discord](https://img.shields.io/badge/현재_진행중-Level_0-B4E197?style=flat-square) 
+![Discord](https://img.shields.io/badge/현재_진행중-Level_1-B4E197?style=flat-square) 
 ![Discord](https://img.shields.io/badge/해결한_문제-42개-83A2FF?style=flat-square)
 
 ### 백준
