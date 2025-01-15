@@ -22,7 +22,6 @@
 
 2. for-each 루프로 배열을 순회하며 각 문자열을 StringBuilder에 추가
 
-
 3. StringBuilder를 String으로 변환하여 반환
 
 ### 시간복잡도
