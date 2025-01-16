@@ -1,4 +1,4 @@
-package programmers.level1.string.numbers_spaced_by_x;
+package programmers.level1.math.numbers_spaced_by_x;
 
 class Solution {
     public long[] solution(int x, int n) {
