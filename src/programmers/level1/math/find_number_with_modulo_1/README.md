@@ -1,141 +1,110 @@
-# [x만큼 간격이 있는 n개의 숫자](https://school.programmers.co.kr/learn/courses/30/lessons/12954)
+# [나머지가 1이 되는 수 찾기](https://school.programmers.co.kr/learn/courses/30/lessons/87389)
 
 ## 📌 문제 설명
-함수 solution은 정수 x와 자연수 n을 입력 받아, x부터 시작해 x씩 증가하는 숫자를 n개 지니는 리스트를 리턴해야 합니다. 다음 제한 조건을 보고, 조건을 만족하는 함수, solution을 완성해주세요.
+자연수 `n`이 매개변수로 주어집니다. `n`을 `x`로 나눈 나머지가 1이 되도록 하는 가장 작은 자연수 `x`를 return 하도록 solution 함수를 완성해주세요. 답이 항상 존재함은 증명될 수 있습니다.
+
 
 ### 제한사항
 
-- x는 -10000000 이상, 10000000 이하인 정수입니다.
-- n은 1000 이하인 자연수입니다.
+- 3 ≤ `n ≤ 1,000,000
 
 ### 입출력 예
-| x  | n |answer|
-|----|---|---|
-| 2  | 5 |[2,4,6,8,10]|
-| 4  | 3 |[4,8,12]|
-| -4 | 2 |[-4, -8]|
+| n  | result |
+|----|--------|
+| 10 | 3      |
+| 12 | 11     |
+
+### 입출력 예 설명
+입출력 예 #1
+- 10을 3으로 나눈 나머지가 1이고, 3보다 작은 자연수 중에서 문제의 조건을 만족하는 수가 없으므로, 3을 return 해야 합니다.
+
+입출력 예 #2
+- 12를 11로 나눈 나머지가 1이고, 11보다 작은 자연수 중에서 문제의 조건을 만족하는 수가 없으므로, 11을 return 해야 합니다.
+
 
 
 ## 🧰 풀이
-```java
-class Solution {
-    public long[] solution(int x, int n) {
-        long[] answer = new long[n];
-        long k = x;  // int -> long으로 형변환하여 오버플로우 방지
-        for (int i = 0; i < n; i++) {
-            answer[i] = k;
-            k += x;
-        }
-        return answer;
-    }
-}
-```
 
 ### 풀이 과정
-1. 결과를 저장할 long[] 배열 생성
+1. n보다 작은 자연수들을 순회하면서 나머지가 1이 되는 가장 작은 수를 찾는 방식으로 구현
 
 
-2. 오버플로우 방지를 위해 int x를 long으로 형변환
+2. 결과값을 저장할 변수 result를 n으로 초기화
+
+    - 최악의 경우 n-1이 답이 될 수 있음
 
 
-3. 반복문을 통해 x씩 증가하는 값을 배열에 저장
-
-
-4. 완성된 배열 리턴
+3. 최종적으로 조건에 부합하는 가장 작은 수 반환
 
 
 ### 시간복잡도
       - O(n): n은 입력받은 자연수
-         - 배열 생성: O(n)
-         - 반복문 순회: O(n)
+         - 최악의 경우 2부터 n-1까지 모든 수를 확인해야 함
+         - 각 반복에서 수행되는 연산(나머지 연산, 비교)은 O(1)
+         - 따라서 전체 시간복잡도는 O(n)
 
 ### 공간복잡도
-      - O(n): n은 입력받은 자연수
-         - 결과 배열 크기: O(n)
-         - 기타 변수(k, i): O(1)
+      - O(1): 입력 크기와 관계없이 고정된 추가 메모리만 사용
+         - result 변수: O(1)
+         - 반복문 카운터 i: O(1)
+         - 추가적인 자료구조를 사용하지 않음
 
 ## ✨ 새롭게 배운 점
-1. 정수 오버플로우 문제 해결
-```java
-// 처음 작성한 코드 - 일부 테스트 케이스 실패
-public long[] solution(int x, int n) {
-   long[] answer = new long[n];
-   int k = x;  // 문제: int 사용
-   for (int i = 0; i < n; i++) {
-      answer[i] = k;
-      k += x;
-   }
-   return answer;
-}
-```
-   - 처음에 k를 int로 선언하여 2개의 테스트 케이스 실패
-   - x와 n의 범위가 커서 중간 계산 과정에서 int 범위(-2^31 ~ 2^31-1)를 벗어남
-   - k를 long으로 변경하여 오버플로우 문제 해결
-   - 실제 프로젝트에서도 자주 발생할 수 있는 문제라 좋은 학습 경험
-      - Java에서 int 범위: -2^31 ~ 2^31-1
-      - Java에서 long 범위: -2^63 ~ 2^63-1
+1. 수학적 최적화 가능성
+    - 나머지가 1이 되는 수는 n-1의 약수일 수 있다는 수학적 특성
+    - 이를 활용하면 더 효율적인 알고리즘 구현 가능
 
 
-2. 배열의 타입 결정
-   - 반환 타입이 long[]인 이유 이해
-   - 결과값의 범위를 고려한 적절한 데이터 타입 선택의 중요성
+2. 초기값 설정의 중요성
+    - result를 n으로 초기화함으로써 별도의 예외처리 없이 알고리즘 구현
+    - 최악의 경우(답이 n-1인 경우)도 자연스럽게 처리
 
 
 ## 💡 개선할 수 있는 점
-1. Stream API를 활용한 함수형 프로그래밍 접근
+1. 수학적 최적화
 
 ```java
-public long[] solution(int x, int n) {
-   return LongStream.iterate(x, i -> i + x)
-           .limit(n)
-           .toArray();
-}
-```
-   - 더 간결하고 가독성 높음
-   - 그러나 기존에 풀었던 방식이 성능은 더 좋을 수 있음
-
-
-2. 입력값 검증 추가
-
-```java
-public long[] solution(int x, int n) {
-   if (n <= 0) {
-      throw new IllegalArgumentException("n must be positive");
-   }
-
-   long[] answer = new long[n];
-   long k = x;
-   for (int i = 0; i < n; i++) {
-      answer[i] = k;
-      k += x;
-   }
-   return answer;
-}
-```
-   - 잘못된 입력에 명확한 에러 메시지 제공하는 식의 방어적 프로그래밍
-
-
-3. 오버플로우 검사 추가
-```java
-public long[] solution(int x, int n) {
-    long[] answer = new long[n];
-    long k = x;
-    
-    for (int i = 0; i < n; i++) {
-        answer[i] = k;
-        // 오버플로우 체크
-        if (k > 0 && Long.MAX_VALUE - k < x) {
-            throw new ArithmeticException("Arithmetic overflow");
+public int solution(int n) {
+    for (int i = 2; i <= Math.sqrt(n); i++) {
+        if ((n - 1) % i == 0) {
+            return i;
         }
-        if (k < 0 && Long.MIN_VALUE - k > x) {
-            throw new ArithmeticException("Arithmetic overflow");
-        }
-        k += x;
     }
-    return answer;
+    return n - 1;
 }
 ```
-   - 계산 과정에서의 오버플로우 검사
-   - 안정성 향상됨
-   - 실무에서 중요한 엣지 케이스 처리 (극단적인 입력값이나 경계값)
-   - 해당 문제에선 입력값의 범위와 입력 형식이 주어졌으므로 별도릐 엣지 케이스 처리는 불필요하나, 프로그램의 안정성 보장와 예상치 못한 버그 방지를 위해 알아야 할 부분
+   - n-1의 약수를 찾는 방식으로 최적화
+   - 시간복잡도를 O(√n)으로 개선 가능
+
+
+2. early return 적용
+
+```java
+public int solution(int n) {
+    for (int i = 2; i < n; i++) {
+        if (n % i == 1) {
+            return i;
+        }
+    }
+    return n - 1;
+}
+```
+   - result 변수 없이 바로 반환할 수 있었음
+
+
+3. 입력값 검증 추가
+```java
+public int solution(int n) {
+    if (n < 3) {
+        throw new IllegalArgumentException("n must be greater than or equal to 3");
+    }
+
+    for (int i = 2; i < n; i++) {
+        if (n % i == 1) {
+            return i;
+        }
+    }
+    return n - 1;
+}
+```
+   - 문제 조건(3 ≤ n ≤ 1,000,000)에 맞는 입력값 검증

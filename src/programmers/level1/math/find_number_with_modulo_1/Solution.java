@@ -1,13 +1,15 @@
-package programmers.level1.math.numbers_spaced_by_x;
+package programmers.level1.math.find_number_with_modulo_1;
 
 class Solution {
-    public long[] solution(int x, int n) {
-        long[] answer = new long[n];
-        long k = x;
-        for (int i = 0; i < n; i++) {
-            answer[i] = k;
-            k += x;
+    public int solution(int n) {
+        int result = n;
+        for (int i = 2; i < n; i++) {
+            if ((n % i) == 1) {
+                if (i < result) {
+                    result = i;
+                }
+            }
         }
-        return answer;
+        return result;
     }
 }
