@@ -108,6 +108,7 @@
    - 내가 푼 코드는 테스트 케이스마다 새로 계산하고 있음
    - 이를 모든 케이스에 대한 결과를 미리 계산해두고 재사용하는 게 좋음 (더 큰 범위에서의 memoization)
 
+   
    ```java
    public class Main {
        static int[] memo = new int[11];  // 문제 제한이 n < 11이므로
