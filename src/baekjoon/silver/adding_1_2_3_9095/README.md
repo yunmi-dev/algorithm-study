@@ -108,33 +108,33 @@
    - 내가 푼 코드는 테스트 케이스마다 새로 계산하고 있음
    - 이를 모든 케이스에 대한 결과를 미리 계산해두고 재사용하는 게 좋음 (더 큰 범위에서의 memoization)
 
-```java
-public class Main {
-    static int[] memo = new int[11];  // 문제 제한이 n < 11이므로
-    
-    public static void main(String[] args) throws IOException {
-        // 미리 1부터 10까지 모든 경우 계산해두기
-        memo[1] = 1;
-        memo[2] = 2;
-        memo[3] = 4;
-        for(int i = 4; i <= 10; i++) {
-            memo[i] = memo[i-3] + memo[i-2] + memo[i-1];
-        }
-        
-        // 이제 테스트 케이스에서는 계산된 값만 가져다 씀
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        int T = Integer.parseInt(br.readLine());
-        
-        for(int i = 0; i < T; i++) {
-            int n = Integer.parseInt(br.readLine());
-            sb.append(memo[n]).append('\n');  // 미리 계산된 값 사용
-        }
-        
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        bw.write(sb.toString());
-        bw.flush();
-        bw.close();
-    }
-}
-```
+   ```java
+   public class Main {
+       static int[] memo = new int[11];  // 문제 제한이 n < 11이므로
+       
+       public static void main(String[] args) throws IOException {
+           // 미리 1부터 10까지 모든 경우 계산해두기
+           memo[1] = 1;
+           memo[2] = 2;
+           memo[3] = 4;
+           for(int i = 4; i <= 10; i++) {
+               memo[i] = memo[i-3] + memo[i-2] + memo[i-1];
+           }
+           
+           // 이제 테스트 케이스에서는 계산된 값만 가져다 씀
+           BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+           StringBuilder sb = new StringBuilder();
+           int T = Integer.parseInt(br.readLine());
+           
+           for(int i = 0; i < T; i++) {
+               int n = Integer.parseInt(br.readLine());
+               sb.append(memo[n]).append('\n');  // 미리 계산된 값 사용
+           }
+           
+           BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+           bw.write(sb.toString());
+           bw.flush();
+           bw.close();
+       }
+   }
+   ```
