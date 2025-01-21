@@ -88,106 +88,76 @@ RGB거리에는 집이 N개 있다. 거리는 선분으로 나타낼 수 있고,
 ### 🧰 풀이 과정
 
 동적 계획법(DP)을 사용하여 해결
-1. 초기값 설정
-   - memo[1] = 1 (1)
-   - memo[2] = 2 (1+1, 2)
-   - memo[3] = 4 (1+1+1, 1+2, 2+1, 3)
+
+1. 상태 정의
+   - dp[i][j]: i번째 집을 j색으로 칠했을 때의 최소 비용 (이게 어려웠음)
+   - j는 0(R), 1(G), 2(B)를 의미
 
 
-2. 점화식 도출
-   - n을 만들기 위해서는:
-     - (n-1)에 1을 더하는 경우
-     - (n-2)에 2를 더하는 경우
-     - (n-3)에 3을 더하는 경우
-   - 따라서 memo[n] = memo[n-3] + memo[n-2] + memo[n-1]
+2. 초기값 설정
+   - dp[1][0] = costs[1][0] (첫 집을 빨강으로 칠했을 때의 최소비용)
+   - dp[1][1] = costs[1][1] (첫 집을 초록으로 칠했을 때의 최소비용)
+   - dp[1][2] = costs[1][2] (첫 집을 파랑으로 칠했을 때의 최소비용)
 
 
-3. Bottom-up 방식으로 구현
-   - 4부터 n까지 반복하며 점화식 적용
-   - memo 배열에 결과값 저장
+3. 점화식 도출
+   - dp[i][0] = costs[i][0] + Math.min(dp[i-1][1], dp[i-1][2])  // 현재 빨강
+   - dp[i][1] = costs[i][1] + Math.min(dp[i-1][0], dp[i-1][2])  // 현재 초록
+   - dp[i][2] = costs[i][2] + Math.min(dp[i-1][0], dp[i-1][1])  // 현재 파랑
 
 
-4. 최적화된 입출력 처리
-   - BufferedReader, StringBuilder, BufferedWriter 활용
+4. Bottom-up 방식으로 구현
+   - 2번 집부터 N번 집까지 순차적으로 계산
+   - 각 집마다 세 가지 색상의 최소 비용 계산
+
+
+5. 최종 결과: N번 집의 세 가지 색상 중 최소값 선택
 
 
 
 ### 시간복잡도와 공간복잡도
 
       
-      시간복잡도: O(T * N)
-         - T개의 테스트 케이스에 대해
-         - 각각 N까지의 계산 수행
-         - 각 계산은 O(1)
-         - 따라서 전체 시간복잡도는 O(T * N)
+      시간복잡도: O(N)
+         - N개의 집에 대해 각각 3가지 색상의 계산 수행
+         - 각 계산은 O(1)의 시간 복잡도
+         - 따라서 전체 시간복잡도는 O(N)
       
       공간복잡도: O(N)
-         - 각 테스트 케이스마다 크기 N+1의 memo 배열 사용
-         - StringBuilder는 최종 출력을 위한 문자열 저장: O(T) (이는 N보다 작으므로 전체 공간복잡도에 영향 X)
+         - (N+1) × 3 크기의 2차원 배열(dp) 사용
+         - (N+1) × 3 크기의 2차원 배열(costs) 사용
+         - 추가 변수들은 상수 공간
          - 전체 공간복잡도는 O(N)
 
 
 
 ### ✨ 새롭게 배운 점
 1. DP를 활용한 문제 해결 패턴
-   - 작은 문제의 해를 이용해 큰 문제 해결
-   - Bottom-up 방식의 구현
-   - 메모이제이션을 통한 중복 계산 방지
+   - 상태를 명확히 정의해야 함
+   - 이전 상태가 다음 상태에 미치는 영향 분석
+   - 최적 부분 구조(Optimal Substructure) 활용
 
 
-2. 효율적인 입출력 처리
-   - BufferedReader로 빠른 입력 처리
-   - StringBuilder로 문자열 연산 최적화
-   - BufferedWriter로 출력 성능 향상
+2. 2차원 배열을 활용한 DP 구현
+   - 여러 상태를 동시에 추적하는 방법
+   - 이전 상태들 중 최적값 선택
 
-
-3. 점화식 도출 과정
-   - 작은 케이스부터 패턴 발견
-   - 문제를 부분 문제로 나누어 해결
 
 ### 💡 성능 개선 포인트
 1. 메모리 사용 최적화
 
    ```java
-   // 현재: 매 테스트 케이스마다 새로운 배열 생성
-   int[] memo = new int[n + 1];
+   // 현재: 두 개의 N+1 크기 배열 사용
+   int[][] costs = new int[N + 1][3];
+   int[][] dp = new int[N + 1][3];
    
-   // 개선: 최대 크기로 한 번만 배열 생성
-   int[] memo = new int[11];  // 문제 제한 n < 11
+   // 개선: 이전 상태만 필요하므로 두 행만 사용
+   int[][] dp = new int[2][3];
    ```
+   - DP를 구할 떄 모든 상태를 저장해놓을 필요 없이, "직전 상태"만 있으면 현재 상태 구할 수 있음
+   - 따라서 N+1 개로 배열 잡을 필요가 없었음
 
-2. 반복 계산 제거
-   - 내가 푼 코드는 테스트 케이스마다 새로 계산하고 있음
-   - 이를 모든 케이스에 대한 결과를 미리 계산해두고 재사용하는 게 좋음 (더 큰 범위에서의 memoization)
 
-   
-   ```java
-   public class Main {
-       static int[] memo = new int[11];  // 문제 제한이 n < 11이므로
-       
-       public static void main(String[] args) throws IOException {
-           // 미리 1부터 10까지 모든 경우 계산해두기
-           memo[1] = 1;
-           memo[2] = 2;
-           memo[3] = 4;
-           for(int i = 4; i <= 10; i++) {
-               memo[i] = memo[i-3] + memo[i-2] + memo[i-1];
-           }
-           
-           // 이제 테스트 케이스에서는 계산된 값만 가져다 씀
-           BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-           StringBuilder sb = new StringBuilder();
-           int T = Integer.parseInt(br.readLine());
-           
-           for(int i = 0; i < T; i++) {
-               int n = Integer.parseInt(br.readLine());
-               sb.append(memo[n]).append('\n');  // 미리 계산된 값 사용
-           }
-           
-           BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-           bw.write(sb.toString());
-           bw.flush();
-           bw.close();
-       }
-   }
-   ```
+2. 불필요한 배열 제거
+   - costs 배열 없이 직접 dp 배열에 계산 가능
+   - 입력 받은 즉시 DP 계산을 수행하면 메모리 절약 가능
