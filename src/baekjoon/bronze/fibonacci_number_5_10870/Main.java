@@ -1,4 +1,4 @@
-package baekjoon.bronze.fibonacci_number_5;
+package baekjoon.bronze.fibonacci_number_5_10870;
 
 import java.io.*;
 
