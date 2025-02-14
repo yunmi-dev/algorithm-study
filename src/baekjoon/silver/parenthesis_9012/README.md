@@ -1,62 +1,74 @@
-# [1, 2, 3 더하기](https://www.acmicpc.net/problem/9095)
+# [괄호](https://www.acmicpc.net/problem/9012)
 
 ## 📌 문제
-정수 4를 1, 2, 3의 합으로 나타내는 방법은 총 7가지가 있다. 합을 나타낼 때는 수를 1개 이상 사용해야 한다.
+괄호 문자열(Parenthesis String, PS)은 두 개의 괄호 기호인 ‘(’ 와 ‘)’ 만으로 구성되어 있는 문자열이다. 그 중에서 괄호의 모양이 바르게 구성된 문자열을 올바른 괄호 문자열(Valid PS, VPS)이라고 부른다. 한 쌍의 괄호 기호로 된 “( )” 문자열은 기본 VPS 이라고 부른다. 만일 x 가 VPS 라면 이것을 하나의 괄호에 넣은 새로운 문자열 “(x)”도 VPS 가 된다. 그리고 두 VPS x 와 y를 접합(concatenation)시킨 새로운 문자열 xy도 VPS 가 된다. 예를 들어 “(())()”와 “((()))” 는 VPS 이지만 “(()(”, “(())()))” , 그리고 “(()” 는 모두 VPS 가 아닌 문자열이다.
 
-- 1+1+1+1
-- 1+1+2
-- 1+2+1
-- 2+1+1
-- 2+2
-- 1+3
-- 3+1
-
-정수 n이 주어졌을 때, n을 1, 2, 3의 합으로 나타내는 방법의 수를 구하는 프로그램을 작성하시오.
+여러분은 입력으로 주어진 괄호 문자열이 VPS 인지 아닌지를 판단해서 그 결과를 YES 와 NO 로 나타내어야 한다.
 
 ### 입력
-첫째 줄에 테스트 케이스의 개수 T가 주어진다. 각 테스트 케이스는 한 줄로 이루어져 있고, 정수 n이 주어진다. n은 양수이며 11보다 작다.
+입력 데이터는 표준 입력을 사용한다. 입력은 T개의 테스트 데이터로 주어진다. 입력의 첫 번째 줄에는 입력 데이터의 수를 나타내는 정수 T가 주어진다. 각 테스트 데이터의 첫째 줄에는 괄호 문자열이 한 줄에 주어진다. 하나의 괄호 문자열의 길이는 2 이상 50 이하이다.
 
 ### 출력
-각 테스트 케이스마다, n을 1, 2, 3의 합으로 나타내는 방법의 수를 출력한다.
+출력은 표준 출력을 사용한다. 만일 입력 괄호 문자열이 올바른 괄호 문자열(VPS)이면 “YES”, 아니면 “NO”를 한 줄에 하나씩 차례대로 출력해야 한다.
 
 ### 예제 입력 1
 
-     3
-     4
-     7
-     10
+     6
+     (())())
+     (((()())()
+     (()())((()))
+     ((()()(()))(((())))()
+     ()()()()(()()())()
+     (()((())()(
 
 ### 예제 출력 1
 
-     7
-     44
-     274
+     NO
+     NO
+     YES
+     NO
+     YES
+     NO
+
+
+
+
+### 예제 입력 2
+
+     3
+     ((
+     ))
+     ())(()
+
+### 예제 출력 2
+
+     NO
+     NO
+     NO
+
+
 
 
 ### 🧰 풀이 과정
 
-동적 계획법(DP)을 사용하여 해결
-1. 초기값 설정
-   - memo[1] = 1 (1)
-   - memo[2] = 2 (1+1, 2)
-   - memo[3] = 4 (1+1+1, 1+2, 2+1, 3)
+스택(Stack)을 활용하여 올바른 괄호문자열 검증
+
+1. 문자열을 한 글자씩 순회하면서 규칙 적용
+
+   - 스택이 비어있지 않고, 스택의 top이 '('이고 현재 문자가 ')'이면
+     - 짝이 맞는 괄호이므로 pop 수행
+
+   - 그 외의 경우
+     - 현재 문자를 스택에 push
 
 
-2. 점화식 도출
-   - n을 만들기 위해서는:
-     - (n-1)에 1을 더하는 경우
-     - (n-2)에 2를 더하는 경우
-     - (n-3)에 3을 더하는 경우
-   - 따라서 memo[n] = memo[n-3] + memo[n-2] + memo[n-1]
+2. 모든 문자 처리 후 스택 상태 확인
+   - 스택이 비어있다면 "YES" (모든 괄호가 올바르게 짝지어짐)
+   - 스택에 문자가 남아있다면 "NO" (짝이 맞지 않는 괄호 존재)
 
 
-3. Bottom-up 방식으로 구현
-   - 4부터 n까지 반복하며 점화식 적용
-   - memo 배열에 결과값 저장
-
-
-4. 최적화된 입출력 처리
-   - BufferedReader, StringBuilder, BufferedWriter 활용
+3. 입출력 최적화
+   - 여러 테스트 케이스의 결과를 한 번에 출력하기 위해 StringBuilder 사용
 
 
 
@@ -65,77 +77,50 @@
       
       시간복잡도: O(T * N)
          - T개의 테스트 케이스에 대해
-         - 각각 N까지의 계산 수행
-         - 각 계산은 O(1)
+         - 각 문자열의 길이 N만큼 순회
+         - Stack의 push, pop, peek 연산은 모두 O(1)
          - 따라서 전체 시간복잡도는 O(T * N)
       
       공간복잡도: O(N)
-         - 각 테스트 케이스마다 크기 N+1의 memo 배열 사용
-         - StringBuilder는 최종 출력을 위한 문자열 저장: O(T) (이는 N보다 작으므로 전체 공간복잡도에 영향 X)
-         - 전체 공간복잡도는 O(N)
+         - 각 테스트 케이스마다 최대 N개의 문자를 저장하는 Stack
+         - StringBuilder는 T개의 결과 저장 -> O(T)
+         - 따라서 전체 공간복잡도는 O(N), (N > T일 때, N이 지배적)
 
 
 
 ### ✨ 새롭게 배운 점
-1. DP를 활용한 문제 해결 패턴
-   - 작은 문제의 해를 이용해 큰 문제 해결
-   - Bottom-up 방식의 구현
-   - 메모이제이션을 통한 중복 계산 방지
+1. Stack을 활용한 괄호 검증
+   - Stack의 LIFO(Last In First Out) 특성을 활용한 문제 해결
+   - Stack의 push, pop, peek 연산의 효율적인 활용
 
 
-2. 효율적인 입출력 처리
-   - BufferedReader로 빠른 입력 처리
-   - StringBuilder로 문자열 연산 최적화
-   - BufferedWriter로 출력 성능 향상
+2. Java 제네릭 타입 시스템
+   - Primitive type(char)과 Wrapper class(Character)의 차이
+   - Stack<Character> 사용 시 auto-boxing의 동작 이해
 
-
-3. 점화식 도출 과정
-   - 작은 케이스부터 패턴 발견
-   - 문제를 부분 문제로 나누어 해결
 
 ### 💡 성능 개선 포인트
-1. 메모리 사용 최적화
+1. 문자열 순회 방식 최적화
 
    ```java
-   // 현재: 매 테스트 케이스마다 새로운 배열 생성
-   int[] memo = new int[n + 1];
+   // 현재: toCharArray()로 새로운 배열 생성
+   for (char ch : PS.toCharArray())
    
-   // 개선: 최대 크기로 한 번만 배열 생성
-   int[] memo = new int[11];  // 문제 제한 n < 11
-   ```
-
-2. 반복 계산 제거
-   - 내가 푼 코드는 테스트 케이스마다 새로 계산하고 있음
-   - 이를 모든 케이스에 대한 결과를 미리 계산해두고 재사용하는 게 좋음 (더 큰 범위에서의 memoization)
-
-   
-   ```java
-   public class Main {
-       static int[] memo = new int[11];  // 문제 제한이 n < 11이므로
-       
-       public static void main(String[] args) throws IOException {
-           // 미리 1부터 10까지 모든 경우 계산해두기
-           memo[1] = 1;
-           memo[2] = 2;
-           memo[3] = 4;
-           for(int i = 4; i <= 10; i++) {
-               memo[i] = memo[i-3] + memo[i-2] + memo[i-1];
-           }
-           
-           // 이제 테스트 케이스에서는 계산된 값만 가져다 씀
-           BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-           StringBuilder sb = new StringBuilder();
-           int T = Integer.parseInt(br.readLine());
-           
-           for(int i = 0; i < T; i++) {
-               int n = Integer.parseInt(br.readLine());
-               sb.append(memo[n]).append('\n');  // 미리 계산된 값 사용
-           }
-           
-           BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-           bw.write(sb.toString());
-           bw.flush();
-           bw.close();
-       }
+   // 개선: charAt() 사용으로 추가 메모리 할당 제거
+   for (int i = 0; i < PS.length(); i++) {
+      char ch = PS.charAt(i);
    }
    ```
+
+2. Stack 대신 배열도 사용 가능
+
+   ```java
+   // 현재: Java의 Stack 클래스 사용
+   Stack<Character> stack = new Stack<>();
+   
+   // 개선: 문자열 길이가 최대 50이므로 고정 크기 배열로 구현 가능
+   char[] stack = new char[50];
+   int top = -1;
+   ```
+
+- 이 문제의 경우 입력 크기가 작아서 이런 최적화가 큰 성능 차이를 만들진 않음 (대용량 처리 시엔 유의미)
